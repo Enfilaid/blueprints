@@ -56,7 +56,6 @@ condition:
     conditions:
       - condition: sun
         before: sunrise
-        after: sunset
       - condition: time
         after: '00:00:00'
         before: '09:00:00'
