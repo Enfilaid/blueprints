@@ -76,7 +76,7 @@ condition:
 action:
   - service: light.turn_on
     target: !input light_target
-    brightness_pct: 100
+    light.brightness_pct: 100
   - wait_for_trigger:
       platform: state
       entity_id: !input motion_entity
