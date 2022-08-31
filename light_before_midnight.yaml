@@ -52,7 +52,7 @@ trigger:
   to: "on"
 
 condition:
-  - condition: or
+  - condition: and
     conditions:
       - condition: sun
         before: sunrise
