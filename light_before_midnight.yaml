@@ -2,7 +2,7 @@ blueprint:
   name: Motion and brightness activated Light
   description: Turn on a light when motion is detected and it is dark enough (or night) but before midnight. 
   domain: automation
-  source_url: https://github.com/Enfilaid/blueprints/lightautomationbeforemidnight.yaml
+  source_url: https://github.com/Enfilaid/blueprints/light_before_midnight.yaml
   input:
     motion_entity:
       name: Motion Sensor
