@@ -1,5 +1,5 @@
 blueprint:
-  name: Motion and brightness activated Light
+  name: Motion and brightness activated Light before midnight
   description: Turn on a light when motion is detected and it is dark enough (or night) but before midnight. 
   domain: automation
   source_url: https://github.com/Enfilaid/blueprints/light_before_midnight.yaml
@@ -58,7 +58,7 @@ condition:
         before: sunrise
         after: sunset
       - condition: time
-        after: '20:30:00'
+        after: '17:00:00'
         before: '23:59:59'
         weekday:
          - mon
