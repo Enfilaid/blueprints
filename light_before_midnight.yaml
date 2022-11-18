@@ -58,7 +58,7 @@ condition:
         after: sunset
       - condition: time
         after: '17:00:00'
-        before: '23:59:59'
+        before: '00:59:59'
         weekday:
          - mon
          - tue
