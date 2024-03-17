@@ -1,0 +1,56 @@
+blueprint:
+  name: Custom Light Activation
+  description: Activate two lights with customizable brightness.
+
+  domain: automation
+  input:
+    light1_entity:
+      name: First Light Entity
+      description: Entity ID of the first light to activate.
+      selector:
+        entity:
+          domain: light
+    light1_brightness:
+      name: Brightness for First Light
+      description: Brightness level for the first light.
+      default: 255
+      selector:
+        number:
+          min: 0
+          max: 255
+          unit_of_measurement: "brightness"
+
+    light2_entity:
+      name: Second Light Entity
+      description: Entity ID of the second light to activate.
+      selector:
+        entity:
+          domain: light
+    light2_brightness:
+      name: Brightness for Second Light
+      description: Brightness level for the second light.
+      default: 255
+      selector:
+        number:
+          min: 0
+          max: 255
+          unit_of_measurement: "brightness"
+
+mode: single
+
+trigger:
+  platform: state
+  entity_id: !input light1_entity
+
+action:
+  - service: light.turn_on
+    target:
+      entity_id: !input light1_entity
+    data:
+      brightness_pct: !input light1_brightness
+
+  - service: light.turn_on
+    target:
+      entity_id: !input light2_entity
+    data:
+      brightness_pct: !input light2_brightness
