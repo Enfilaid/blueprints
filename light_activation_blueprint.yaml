@@ -20,8 +20,8 @@ blueprint:
           max: 100
           unit_of_measurement: "%"
           mode: slider
-    motion_entity:
-      name: Motion Sensor
+    bewegungssensor:
+      name: Bewegungssensor
       selector:
         entity:
           domain: binary_sensor
@@ -67,7 +67,7 @@ blueprint:
 
 trigger:
   - platform: state
-    entity_id: !input motion_entity
+    entity_id: !input bewegungssensor
     from: "off"
     to: "on"
 
@@ -87,7 +87,7 @@ action:
 
   - wait_for_trigger:
       - platform: state
-        entity_id: !input motion_entity
+        entity_id: !input bewegungssensor
         from: "on"
         to: "off"
         for:
