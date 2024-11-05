@@ -1,0 +1,101 @@
+blueprint:
+  name: Lichtsteuerung mit Bewegung, Helligkeit und Zeitsteuerung #V1.0
+  description: Schaltet das Licht basierend auf einem Bewegungssensor, einer Helligkeitsschwelle und einer Zeitsteuerung ein und hält es bei Bewegung an.
+  domain: automation
+  input:
+    licht:
+      name: Licht
+      description: Wähle das Licht, das geschaltet werden soll.
+      selector:
+        target:
+          entity:
+            domain: light
+    brightness:
+      name: Helligkeit des Lichts in %
+      description: Helligkeit des Lichts beim Einschalten (0-100)
+      default: 100
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+          mode: slider
+    motion_entity:
+      name: Bewegungssensor
+      description: Wähle den Bewegungssensor, der das Licht steuert.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    lux_sensor:
+      name: Helligkeitssensor
+      description: Wähle den Lux-/Helligkeitssensor.
+      selector:
+        entity:
+          device_class: illuminance
+    lux_threshold:
+      name: Lux-Schwellenwert
+      description: Maximaler Lux-Wert, unter dem das Licht eingeschaltet wird (0-100)
+      default: 30
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "lx"
+          mode: slider
+    wait_time:
+      name: Wartezeit in Sekunden
+      description: Wie lange das Licht nach der letzten Bewegung anbleiben soll.
+      default: 60
+      selector:
+        number:
+          min: 0
+          max: 1800
+          unit_of_measurement: "Sekunden"
+          mode: slider
+    start_time:
+      name: Startzeit
+      description: Uhrzeit, ab wann das Licht durch Bewegung aktiviert werden kann.
+      default: "18:00:00"
+      selector:
+        time: {}
+    end_time:
+      name: Endzeit
+      description: Uhrzeit, bis wann das Licht durch Bewegung aktiviert werden kann.
+      default: "06:00:00"
+      selector:
+        time: {}
+
+trigger:
+  - platform: state
+    entity_id: !input motion_entity
+    from: "off"
+    to: "on"
+
+condition:
+  - condition: numeric_state
+    entity_id: !input lux_sensor
+    below: !input lux_threshold
+  - condition: time
+    after: !input start_time
+    before: !input end_time
+
+action:
+  - service: light.turn_on
+    target: !input licht
+    data:
+      brightness_pct: !input brightness
+
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_entity
+        from: "on"
+        to: "off"
+        for:
+          seconds: !input wait_time
+    continue_on_timeout: false
+
+  - service: light.turn_off
+    target: !input licht
+
+mode: restart
