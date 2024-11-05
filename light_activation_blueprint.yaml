@@ -1,8 +1,7 @@
 blueprint:
-  name: Lichtsteuerung mit Bewegung, Helligkeit und Zeitsteuerung
+  name: Lichtsteuerung mit Bewegung, Helligkeit und Zeitsteuerung #V1.0
   description: Schaltet das Licht basierend auf einem Bewegungssensor, einer Helligkeitsschwelle und einer Zeitsteuerung ein und hält es bei Bewegung an.
   domain: automation
-  version: "1.0"
   input:
     licht:
       name: Licht
