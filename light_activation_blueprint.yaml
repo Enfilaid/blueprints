@@ -21,8 +21,7 @@ blueprint:
           unit_of_measurement: "%"
           mode: slider
     motion_entity:
-      name: Bewegungssensor
-      description: Wähle den Bewegungssensor, der das Licht steuert.
+      name: Motion Sensor
       selector:
         entity:
           domain: binary_sensor
