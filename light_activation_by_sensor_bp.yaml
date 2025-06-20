@@ -69,33 +69,33 @@ blueprint:
 trigger:
   - platform: state
     entity_id: !input motion_entity
-    from: "off"
     to: "on"
-
-condition:
-  - condition: numeric_state
-    entity_id: !input lux_sensor
-    below: !input lux_threshold
-  - condition: time
-    after: !input start_time
-    before: !input end_time
+  - platform: state
+    entity_id: !input motion_entity
+    to: "off"
+    for:
+      seconds: !input wait_time
 
 action:
-  - service: light.turn_on
-    target: !input licht
-    data:
-      brightness_pct: !input brightness
-
-  - wait_for_trigger:
-      - platform: state
-        entity_id: !input motion_entity
-        from: "on"
-        to: "off"
-        for:
-          seconds: !input wait_time
-    continue_on_timeout: false
-
-  - service: light.turn_off
-    target: !input licht
-
-mode: restart
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: "on"
+        sequence:
+          - condition: numeric_state
+            entity_id: !input lux_sensor
+            below: !input lux_threshold
+          - condition: time
+            after: !input start_time
+            before: !input end_time
+          - service: light.turn_on
+            target: !input licht
+            data:
+              brightness_pct: !input brightness
+      - conditions:
+          - condition: trigger
+            id: "off"
+        sequence:
+          - service: light.turn_off
+            target: !input licht
+mode: single
